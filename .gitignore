@@ -1,0 +1,14 @@
+# Dependencies
+/node_modules
+
+# Environment variables
+.env
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# NOTE: We are INTENTIONALLY NOT ignoring the /dist folder.
+# This allows us to commit the production build of the frontend
+# directly into our backend repository for deployment.
