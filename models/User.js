@@ -1,4 +1,3 @@
-// backend/models/User.js
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
@@ -18,7 +17,8 @@ const userSchema = mongoose.Schema(
       required: true,
       match: [/^\d{10}$/, 'Please fill a valid 10 digit whatsapp number'],
     },
-    address: { type: String, required: true },
+    currentAddress: { type: String, required: true },    // Renamed from 'address'
+    permanentAddress: { type: String, required: true },  // New field
     center: { type: String, required: true },
     district: { type: String, required: true },
     mandal: { type: String, required: true },
@@ -29,14 +29,13 @@ const userSchema = mongoose.Schema(
     occupationDetails: { type: String },
     isPreceptor: { type: Boolean, default: false },
     gender: { type: String, required: true },
-    password: { type: String, required: true }, // Added password field back
+    password: { type: String, required: true },
   },
   {
     timestamps: true,
   }
 );
 
-// Pre-save hook to hash the password before saving
 userSchema.pre('save', async function (next) {
   if (!this.isModified('password')) {
     next();
@@ -45,7 +44,6 @@ userSchema.pre('save', async function (next) {
   this.password = await bcrypt.hash(this.password, salt);
 });
 
-// Method to compare entered password with hashed password
 userSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
