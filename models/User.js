@@ -1,6 +1,15 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
+// Define a reusable address schema
+const addressSchema = new mongoose.Schema({
+  street: { type: String, required: true },
+  village: { type: String, required: true },
+  mandal: { type: String, required: true },
+  district: { type: String, required: true },
+  center: { type: String, required: true },
+}, { _id: false }); // _id: false prevents MongoDB from creating an _id for the sub-document
+
 const userSchema = mongoose.Schema(
   {
     firstName: { type: String, required: true },
@@ -17,12 +26,8 @@ const userSchema = mongoose.Schema(
       required: true,
       match: [/^\d{10}$/, 'Please fill a valid 10 digit whatsapp number'],
     },
-    currentAddress: { type: String, required: true },    // Renamed from 'address'
-    permanentAddress: { type: String, required: true },  // New field
-    center: { type: String, required: true },
-    district: { type: String, required: true },
-    mandal: { type: String, required: true },
-    village: { type: String, required: true },
+    currentAddress: addressSchema,
+    permanentAddress: addressSchema,
     dob: { type: Date, required: true },
     age: { type: Number, required: true, max: 36 },
     occupation: { type: String, required: true },
